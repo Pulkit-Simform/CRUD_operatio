@@ -59,7 +59,7 @@ const addProductsIntoTables = (name,image,price,description,flag=false,idx=null)
                     <a class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded m-2" id="btn-edit-${idx}" data-button href="./pages/edit.html">
                         Edit
                     </a>
-                    <a class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-2" id="btn-delete-${idx}" data-button href="./pages/view.html">
+                    <a class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-2" id="btn-delete-${idx}" data-button href="#">
                         Delete
                     </a>
                 </td>          
@@ -175,8 +175,14 @@ document.body.addEventListener("click", e => {
 
         const props = assignProperty.split("-")[1];
         
-        if(assignProperty.split("-")[0] === "asc") product_arr.sort((a,b) => a[props].localeCompare(b[props]))
-        if(assignProperty.split("-")[0] === "desc") product_arr.sort((a,b) => -a[props].localeCompare(b[props]))
+        if(assignProperty.split("-")[0] === "asc") {
+            if(props==="price") product_arr.sort((a,b) => a[props].localeCompare(b[props],'en', {numeric: true} ))
+            else product_arr.sort((a,b) => a[props].localeCompare(b[props]))
+        }
+        if(assignProperty.split("-")[0] === "desc"){            
+            if(props==="price") product_arr.sort((a,b) => - a[props].localeCompare(b[props],'en', {numeric: true} ))
+            else product_arr.sort((a,b) => -a[props].localeCompare(b[props]))        
+        }
         
         
         localStorage.clear();
@@ -200,8 +206,33 @@ document.body.addEventListener("click", e => {
 
     }
 
-    if(e.target.matches("[data-button]")){                
-        sessionStorage.setItem("idx", (e.target.id.split("-")[2])-1);
+    if(e.target.matches("[data-button]")){               
+        if(e.target.id.split("-")[1] ==="delete"){            
+            e.preventDefault();
+            const id = (e.target.id.split("-")[2])-1
+            
+            console.log("id -> ",id," BEFORE => ",product_arr);
+            product_arr.splice(id,1);
+            console.log("AFTER => ",product_arr);
+            localStorage.setItem("product_arr",JSON.stringify(product_arr));
+            const arr = JSON.parse(localStorage.getItem("product_arr"));
+            addProductIntoTable.innerHTML = '';
+            arr.forEach((el,idx) => {
+                addProductIntoTable?.appendChild(
+                    addProductsIntoTables(
+                        el.name,
+                        el.image,
+                        el.price,
+                        el.description,
+                        true,
+                        idx+1,
+                    )
+                );
+            });
+            
+        }else{
+            sessionStorage.setItem("idx", (e.target.id.split("-")[2])-1);
+        }
     }
 });
 
@@ -210,7 +241,7 @@ window.addEventListener("load", (event) => {
     
     if(localStorage.getItem("product_arr").length > 0){
         product_arr = JSON.parse(localStorage.getItem("product_arr"))
-        console.log(product_arr);
+        // console.log(product_arr);
         product_arr.forEach((el,idx) => {
             addProductIntoTable?.appendChild(
                 addProductsIntoTables(

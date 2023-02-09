@@ -80,7 +80,17 @@ productForm?.addEventListener("submit",(e) => {
         product_arr.splice(idx,1,product);
         // after then add data into tables;
         localStorage.setItem("product_arr",JSON.stringify(product_arr));
+
+        const alertStr = `        
+            <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 lineUp" role="alert">
+                <span class="font-medium">Product Updated Successfully!</span>                                 
+            </div>
+        `
+
+        document.getElementById("alert-box").innerHTML = alertStr;
      
     }
 
 })
+
+
