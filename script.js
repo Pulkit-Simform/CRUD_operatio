@@ -29,7 +29,9 @@ function addProduct(name,image,price,description){
 }
 
 
-const addProductsIntoTables = (name,image,price,description) => {
+const addProductsIntoTables = (name,image,price,description,flag=false,idx=null) => {
+
+   
 
     const tableStr = (idx,name,image,price,description) => {
         const trClass = ["bg-white","border-b"];
@@ -66,6 +68,10 @@ const addProductsIntoTables = (name,image,price,description) => {
         createTrElement.innerHTML = tdStr;        
         return createTrElement;
     };
+
+    if(flag){
+        return tableStr(idx,name,image,price,description);
+    }
 
     const productInfo = JSON.parse(localStorage.getItem("product_arr")).slice(-1)[0];
     // const temp_arr = 
@@ -166,15 +172,30 @@ document.body.addEventListener("click", e => {
         });
 
         const props = assignProperty.split("-")[1];
-        console.log(props," -> ",product_arr[0][props]);
-
-        product_arr.sort((a,b) => a[props].localeCompare(b[props]))
-        console.log(product_arr);
         
-        // objs.sort((a, b) => a.last_nom.localeCompare(b.last_nom));
-
-
+        if(assignProperty.split("-")[0] === "asc") product_arr.sort((a,b) => a[props].localeCompare(b[props]))
+        if(assignProperty.split("-")[0] === "desc") product_arr.sort((a,b) => -a[props].localeCompare(b[props]))
         
+        
+        localStorage.clear();
+        localStorage.setItem("product_arr",product_arr);
+
+        addProductIntoTable.innerHTML = '';
+
+        product_arr.forEach((el,idx) => {
+            addProductIntoTable?.appendChild(
+                addProductsIntoTables(
+                    el.name,
+                    el.image,
+                    el.price,
+                    el.description,
+                    true,
+                    idx+1,
+                )
+            );
+        })
+
+
     }
 });
 
