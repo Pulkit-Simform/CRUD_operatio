@@ -211,9 +211,9 @@ document.body.addEventListener("click", e => {
             e.preventDefault();
             const id = (e.target.id.split("-")[2])-1
             
-            console.log("id -> ",id," BEFORE => ",product_arr);
+            
             product_arr.splice(id,1);
-            console.log("AFTER => ",product_arr);
+            
             localStorage.setItem("product_arr",JSON.stringify(product_arr));
             const arr = JSON.parse(localStorage.getItem("product_arr"));
             addProductIntoTable.innerHTML = '';
@@ -241,7 +241,6 @@ window.addEventListener("load", (event) => {
     
     if(localStorage.getItem("product_arr").length > 0){
         product_arr = JSON.parse(localStorage.getItem("product_arr"))
-        // console.log(product_arr);
         product_arr.forEach((el,idx) => {
             addProductIntoTable?.appendChild(
                 addProductsIntoTables(
