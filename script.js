@@ -1,6 +1,6 @@
 'use strict'
 
-const product_arr = [];
+let product_arr = [];
 const addProductIntoTable = document.getElementById("add_product_table");
 
 
@@ -53,15 +53,15 @@ const addProductsIntoTables = (name,image,price,description,flag=false,idx=null)
                     ${description}
                 </td>
                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="btn-view-${idx}">
+                    <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-2" id="btn-view-${idx}" data-button href="./pages/view.html">
                         View
-                    </button>
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" id="btn-edit-${idx}">
+                    </a>
+                    <a class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded m-2" id="btn-edit-${idx}" data-button href="./pages/edit.html">
                         Edit
-                    </button>
-                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" id="btn-delete-${idx}">
+                    </a>
+                    <a class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-2" id="btn-delete-${idx}" data-button href="./pages/view.html">
                         Delete
-                    </button>
+                    </a>
                 </td>          
         `;
 
@@ -160,6 +160,8 @@ productForm?.addEventListener("submit",(e) => {
 })
 
 document.body.addEventListener("click", e => {    
+
+    // For Sorting
     if (e.target.matches("[data-link]")) {        
         e.preventDefault();
         
@@ -178,7 +180,7 @@ document.body.addEventListener("click", e => {
         
         
         localStorage.clear();
-        localStorage.setItem("product_arr",product_arr);
+        localStorage.setItem("product_arr",JSON.stringify(product_arr));
 
         addProductIntoTable.innerHTML = '';
 
@@ -197,7 +199,31 @@ document.body.addEventListener("click", e => {
 
 
     }
+
+    if(e.target.matches("[data-button]")){                
+        sessionStorage.setItem("idx", (e.target.id.split("-")[2])-1);
+    }
 });
 
+// add to localStorage when its load
+window.addEventListener("load", (event) => {
+    
+    if(localStorage.getItem("product_arr").length > 0){
+        product_arr = JSON.parse(localStorage.getItem("product_arr"))
+        console.log(product_arr);
+        product_arr.forEach((el,idx) => {
+            addProductIntoTable?.appendChild(
+                addProductsIntoTables(
+                    el.name,
+                    el.image,
+                    el.price,
+                    el.description,
+                    true,
+                    idx+1,
+                )
+            );
+        })
+    }
+});
 
 

@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Operation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
+    
+</head>
+<body>
+
+    <section class="text-gray-600 body-font relative">
+        <div class="container px-5 py-24 mx-auto">
+            <div class="flex flex-col text-center w-full mb-12">
+                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Product</h1>
+                <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Whatever cardigan tote bag tumblr hexagon brooklyn
+                    asymmetrical gentrify.</p>
+            </div>
+
+
+          
+            <div class="lg:w-2/3 md:w-full mx-auto">
+                
+                <div class="flex flex-wrap -m-2">
+                    <!-- Section for form -->
+                    <div class="block p-6 rounded-lg shadow-lg bg-white max-w-md mx-auto w-full border">
+                        <a href="../index.html">
+
+                            <button type="button" class="
+                            w-1/3
+                            mb-4
+                            px-2
+                            py-4
+                            bg-green-500
+                            text-white
+                            font-medium
+                            text-xs
+                            leading-tight
+                            uppercase
+                            rounded
+                            shadow-md
+                            hover:bg-green-600 hover:shadow-lg
+                            focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0
+                            active:bg-green-600 active:shadow-lg
+                            transition
+                            duration-150
+                            p-4
+                            ease-in-out                      
+                            "
+                            href="../index.html"
+                            >
+                            Back To Home
+                            </button> 
+                        </a>
+        
+                        <form class="" id="product_form">
+                            <div class="form-group mb-6" id="div_name">
+                                <label for="exampleInputEmail2"
+                                    class="form-label inline-block mb-2 text-gray-700">Product Name</label>
+                                <input type="text" class="form-control
+                                    block
+                                    w-full
+                                    px-3
+                                    py-1.5
+                                    text-base
+                                    font-normal
+                                    text-gray-700
+                                    bg-gray-100 bg-clip-padding
+                                    border border-solid border-gray-300
+                                    rounded
+                                    transition
+                                    ease-in-out
+                                    m-0
+                                    cursor-not-allowed
+                                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="product_name"
+                                    aria-describedby="emailHelp" placeholder="Enter Product" disabled>
+                            </div>
+
+                            <div class="form-group mb-6" id="div_image">                          
+                                <label for="exampleInputEmail2"
+                                class="form-label inline-block mb-2 text-gray-700">Image</label>
+                            <input type="text" class="form-control
+                                block
+                                w-full
+                                px-3
+                                py-1.5
+                                text-base
+                                font-normal
+                                text-gray-700
+                                bg-gray-100 bg-clip-padding
+                                border border-solid border-gray-300
+                                rounded
+                                transition
+                                ease-in-out
+                                m-0
+                                cursor-not-allowed
+                                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="product_image"
+                                aria-describedby="emailHelp" placeholder="Please Add Image Url" disabled>
+                            </div>
+
+                            <div class="form-group mb-6" id="div_price">
+                                <label for="exampleInputEmail2"
+                                    class="form-label inline-block mb-2 text-gray-700">Price</label>
+                                <div class="flex">
+                                    <span
+                                        class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                        ₹
+                                    </span>
+                                    <input type="text"
+                                        class="rounded-none rounded-r-lg bg-gray-100 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed"
+                                        id="product_price"
+                                        placeholder="Enter Price"
+                                        min="0"                                        
+                                        disabled
+                                    />
+                                </div>
+         
+                            </div>
+
+
+                            <div class="form-group mb-6" id="div_description">
+                                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                <textarea id="product_description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed" placeholder="Product description.." disabled></textarea>
+                            </div>
+
+                            <!-- <p class="text-gray-800 mt-6 text-center">Not a member? <a href="#!"
+                                    class="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out">Register</a>
+                            </p> -->
+                        </form>
+                    </div>
+                    <!-- Section form ended-->
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="../scripts/view.js"></script>
+</body>
+</html>
