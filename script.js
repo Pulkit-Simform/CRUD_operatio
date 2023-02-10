@@ -256,4 +256,82 @@ window.addEventListener("load", (event) => {
     }
 });
 
+const renderTable = (arr=product_arr,filter_inp=null) => {
+    
+    addProductIntoTable.innerHTML = '';
+    arr.forEach((el,idx) => {
+        addProductIntoTable?.appendChild(
+            addProductsIntoTables(
+                el.name,
+                el.image,
+                el.price,
+                el.description,
+                true,
+                filter_inp!==null?filter_inp:idx+1,
+            )
+        );
+    });
+}
 
+
+// For filter
+document.getElementById("filter-input").addEventListener("keydown",(e) => {
+    let val = e.key;
+    var reg = /^\d+$/;
+    console.log(typeof val);
+    if(reg.test(val) && parseInt(val)>0){
+        const filterId = document.getElementById("filter-input");
+        
+        const f = [product_arr.at(parseInt(val)-1)];
+        // const f = product_arr.forEach((el,idx) => {
+        //     if(idx === val)
+        // })
+
+        console.log("F -> ",f);
+        renderTable(f,filterId.value+1);
+    }
+
+    if(e.key === "Backspace"){
+        renderTable();
+    }
+});
+
+// document.getElementById("filter_form").addEventListener("submit",e => {
+//     e.preventDefault();
+//     const filterId = document.getElementById("filter-input");
+//    if(filterId.value === null){
+//         addProductIntoTable.innerHTML = '';
+//         product_arr.forEach((el,idx) => {
+//             addProductIntoTable?.appendChild(
+//                 addProductsIntoTables(
+//                     el.name,
+//                     el.image,
+//                     el.price,
+//                     el.description,
+//                     true,
+//                     filterId.value,
+//                 )
+//             );
+//         });
+//    }else{
+
+//        const f = [product_arr.at(filterId.value-1)];
+       
+//        localStorage.setItem("product_filter",JSON.stringify(f));
+//        addProductIntoTable.innerHTML = '';
+//        f.forEach((el,idx) => {
+//            addProductIntoTable?.appendChild(
+//                addProductsIntoTables(
+//                    el.name,
+//                    el.image,
+//                    el.price,
+//                    el.description,
+//                    true,
+//                    filterId.value,
+//                )
+//            );
+//        });
+        
+//    }
+   
+// })
