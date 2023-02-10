@@ -1,8 +1,14 @@
+'use strict'
+
+// * for index finding [from sessionStorage]
 let idx = sessionStorage.getItem("idx");
 
+// * get The data from index
 const product_arr = JSON.parse(localStorage.getItem("product_arr"));
-console.log(product_arr);
 
+/**
+ * * For initial load
+ */
 window.addEventListener("load",() => {
     document.getElementById("product_name").value = product_arr[idx].name;
     document.getElementById("product_image").value = product_arr[idx].image;
@@ -10,6 +16,13 @@ window.addEventListener("load",() => {
     document.getElementById("product_description").value = product_arr[idx].description;
 })
 
+/**
+ * * Creating object of [Product]
+ * @param {*} name 
+ * @param {*} image 
+ * @param {*} price 
+ * @param {*} description 
+ */
 function addProduct(name,image,price,description){
     this.name = name;
     this.image = image;
@@ -18,7 +31,14 @@ function addProduct(name,image,price,description){
 }
 
 
-
+/**
+ * ! Generating error on runtime
+ * @param {*} name 
+ * @param {*} image 
+ * @param {*} price 
+ * @param {*} description 
+ * @returns 
+ */
 const productError = (name,image,price,description) => {
     const nameDiv = document.getElementById("div_name");
     const imageDiv = document.getElementById("div_image");
@@ -59,7 +79,9 @@ const productError = (name,image,price,description) => {
 const productForm = document.getElementById("product_form")
 
 
-
+/**
+ * * OnSubmit Form Event Same as Script.js
+ */
 productForm?.addEventListener("submit",(e) => {
     e.preventDefault();
     const name = document.getElementById("product_name");
@@ -68,17 +90,18 @@ productForm?.addEventListener("submit",(e) => {
     const description = document.getElementById("product_description");
     
 
-    // for showing error
-    // check weather any error is there or not
+    // * for showing error
+    // * check weather any error is there or not
     const checkError = productError(name,image,price,description);
 
-    // If error detected then simply not put data into tables;
+    // * If error detected then simply not put data into tables;
     if(!checkError){        
-        // for adding the data
+        // * for adding the data
         let product = new addProduct(name.value,image.value,price.value,description.value);
         
         product_arr.splice(idx,1,product);
-        // after then add data into tables;
+        
+        // * after then add data into tables;
         localStorage.setItem("product_arr",JSON.stringify(product_arr));
 
         const alertStr = `        

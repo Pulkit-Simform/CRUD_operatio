@@ -1,9 +1,11 @@
 'use strict'
 
+/**
+ *  * Find index from sessionStorage and parse the value into field accordingly
+ */
 let idx = sessionStorage.getItem("idx");
 
 const arr = JSON.parse(localStorage.getItem("product_arr"));
-const obj = arr[idx];
 
 document.getElementById("product_name").value = arr[idx].name;
 document.getElementById("product_image").src = arr[idx].image;
