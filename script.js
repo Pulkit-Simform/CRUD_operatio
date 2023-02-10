@@ -316,22 +316,28 @@ document.getElementById("filter-input").addEventListener("keyup",(e) => {
             const f = [product_arr.at(parseInt(filterId.value)-1)];
             renderTable(f,Math.abs(filterId.value));
         }catch(err){
+            /**
+             * ! for catching error on runtime if no records found
+             */
+
+            // ! alert string that inserted on runtime
             const alertStr = `        
-                <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-red-800 dark:text-red-400 lineUp" role="alert">
+                <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 dark:bg-red-800 dark:text-red-400 lineUp" role="alert">
                     <span class="font-medium">No Record Found!</span>                                 
                 </div>
             `
 
             document.getElementById("alert-box").innerHTML = alertStr;
 
+            // ! will automatically remove error after 2 seconds
             setTimeout(() => {
                 document.getElementById("alert-box").innerHTML = "";
-            },2000)
+            },2000);
         }        
     }
 
     if(e.key === "Backspace"){
-        // * For throwin error on runtime if records not found
+        // * The whole table parse if backspace key event happens
         renderTable();
     }
 });
