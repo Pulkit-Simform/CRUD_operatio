@@ -36,13 +36,15 @@ function addProduct(name,image,price,description){
 }
 
 /**
- * 
+ * * For rendering data into tables
  * @param {*} arr | default: global product_arr | or to be passed
  * @param {*} filter_inp | default: null or passed value as integer
  */
 const renderTable = (arr=product_arr,filter_inp=null) => {
-    
+    // * First clear the table 
     addProductIntoTable.innerHTML = '';
+
+    // * Then it will add data one by one
     arr.forEach((el,idx) => {
         addProductIntoTable?.appendChild(
             addProductsIntoTables(
@@ -300,10 +302,11 @@ window.addEventListener("load", (event) => {
 });
 
 
-
+// * global filter id 
 const filterId = document.getElementById("filter-input");
+
 /**
- * * For Filtering by Id
+ * * For Filtering by Id when key press
 */
 document.getElementById("filter-input").addEventListener("keyup",(e) => {
     let val = e.key;
