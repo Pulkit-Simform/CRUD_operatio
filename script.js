@@ -1,26 +1,33 @@
+/**
+ * @Author : Pulkit Sharma
+ */
+
 'use strict'
 
+/**
+ * * Global Product Array
+ */
 let product_arr = [];
+
+
+/**
+ * * global state of add_product_table 
+ * * its for listening and rendering the data
+ */
 const addProductIntoTable = document.getElementById("add_product_table");
 
+/**
+ * * Product form that listen for submit event
+ */
+const productForm = document.getElementById("product_form")
 
-// // for initial testing
-// // Removed once its finished
-// localStorage.setItem("product_arr",[
-//     {
-//         name:"Shope1",
-//         image:"https://c8.alamy.com/comp/2C6F7T5/imaghe-shows-a-selection-of-spanners-used-in-the-engineering-industry-2C6F7T5.jpg",
-//         price:1200,
-//         description:"Rasdasdadjl"
-//     },
-//     {
-//         name:"Shope2",
-//         image:"https://c8.alamy.com/comp/2C6F7T5/imaghe-shows-a-selection-of-spanners-used-in-the-engineering-industry-2C6F7T5.jpg",
-//         price:120000,
-//         description:"Rasdasdadjasdaldsjajl"
-//     }
-// ])
-
+/**
+ * 
+ * @param {*} name 
+ * @param {*} image 
+ * @param {*} price 
+ * @param {*} description 
+ */
 function addProduct(name,image,price,description){
     this.name = name;
     this.image = image;
@@ -28,11 +35,51 @@ function addProduct(name,image,price,description){
     this.description = description;
 }
 
+/**
+ * 
+ * @param {*} arr | default: global product_arr | or to be passed
+ * @param {*} filter_inp | default: null or passed value as integer
+ */
+const renderTable = (arr=product_arr,filter_inp=null) => {
+    
+    addProductIntoTable.innerHTML = '';
+    arr.forEach((el,idx) => {
+        addProductIntoTable?.appendChild(
+            addProductsIntoTables(
+                el.name,
+                el.image,
+                el.price,
+                el.description,
+                true,
+                filter_inp!==null?filter_inp:idx+1,
+            )
+        );
+    });
+}
 
+
+
+/**
+ * 
+ * @param {*} name 
+ * @param {*} image 
+ * @param {*} price 
+ * @param {*} description 
+ * @param {*} flag 
+ * @param {*} idx 
+ * @returns void
+ */
 const addProductsIntoTables = (name,image,price,description,flag=false,idx=null) => {
 
-   
-
+    /**
+     * * get the initial data and return the tr element to insert into table
+     * @param {*} idx 
+     * @param {*} name 
+     * @param {*} image 
+     * @param {*} price 
+     * @param {*} description 
+     * @returns <tr> element
+     */
     const tableStr = (idx,name,image,price,description) => {
         const trClass = ["bg-white","border-b"];
         const createTrElement = document.createElement("tr");
@@ -74,11 +121,10 @@ const addProductsIntoTables = (name,image,price,description,flag=false,idx=null)
     }
 
     const productInfo = JSON.parse(localStorage.getItem("product_arr")).slice(-1)[0];
-    // const temp_arr = 
-    // product_arr.forEach((e,idx) => {
-
-    // })
     
+    /**
+     * * Adding data inside tables by appendChild
+     */
     addProductIntoTable?.appendChild(
         tableStr(
             product_arr.length,
@@ -89,14 +135,25 @@ const addProductsIntoTables = (name,image,price,description,flag=false,idx=null)
         )
     );
     
+    /**
+     * * Clear the input after inserted into tables
+     */
     name.value = "";
     image.value = "";
     price.value = 0;
     description.value = "";
-
     
 }
 
+/**
+ * ! Checking for errors on runtime
+ * ! if anyfield is empty or null or undefined then it will throw an error
+ * @param {*} name 
+ * @param {*} image 
+ * @param {*} price 
+ * @param {*} description 
+ * @returns 
+ */
 const productError = (name,image,price,description) => {
     const nameDiv = document.getElementById("div_name");
     const imageDiv = document.getElementById("div_image");
@@ -104,6 +161,12 @@ const productError = (name,image,price,description) => {
     const descriptionDiv = document.getElementById("div_description");
     let flag = false;
 
+    /**
+     * ! adding error on runtime 
+     * ! adding after input box
+     * @param {*} err * for error string 
+     * @param {*} divEl * for divElement that will append after
+     */
     const errorStr = (err,divEl) => {
         const pElement = document.createElement("p")        
         const pStyle = ["mt-2","text-sm","text-red-600","dark:text-red-500"];
@@ -115,7 +178,9 @@ const productError = (name,image,price,description) => {
         pElement.innerHTML = errStr;         
         divEl.appendChild(pElement);
         
-
+        /**
+         * * Error will remove after 2 seconds
+         */
         setTimeout(() => {
             divEl.removeChild(pElement);
         },2000)
@@ -123,7 +188,9 @@ const productError = (name,image,price,description) => {
         flag=true;
     }
 
-
+    /**
+     * * Error logic
+     */
     if(name.value.length === 0) errorStr("Please Enter Proper Product name",nameDiv);
     if(image.value.length === 0) errorStr("Please Upload Image",imageDiv);
     if(parseFloat(price?.value) <= 0) errorStr("Please Enter Proper Price",priceDiv);
@@ -133,8 +200,11 @@ const productError = (name,image,price,description) => {
 
 }
 
-const productForm = document.getElementById("product_form")
 
+
+/**
+ * * Submit Event of Product Form
+ */
 productForm?.addEventListener("submit",(e) => {
     e.preventDefault();
     const name = document.getElementById("product_name");
@@ -143,25 +213,30 @@ productForm?.addEventListener("submit",(e) => {
     const description = document.getElementById("product_description");
     
 
-    // for showing error
-    // check weather any error is there or not
+    // ! for showing error
+    // ! check weather any error is there or not
     const checkError = productError(name,image,price,description);
 
-    // If error detected then simply not put data into tables;
+    // ! If error detected then simply not put data into tables;
     if(!checkError){        
-        // for adding the data
+        // * for adding the data
         let product = new addProduct(name.value,image.value,price.value,description.value);
         product_arr.push(product);
-        // after then add data into tables;
+        // * after then add data inserted tables;
         localStorage.setItem("product_arr",JSON.stringify(product_arr));
         addProductsIntoTables(name,image,price,description);
     }
 
 })
 
+
+/**
+ * * Listening for Sorting
+ * * And for View,Delete, and Show
+ */
 document.body.addEventListener("click", e => {    
 
-    // For Sorting
+    // * For Sorting
     if (e.target.matches("[data-link]")) {        
         e.preventDefault();
         
@@ -188,23 +263,11 @@ document.body.addEventListener("click", e => {
         localStorage.clear();
         localStorage.setItem("product_arr",JSON.stringify(product_arr));
 
-        addProductIntoTable.innerHTML = '';
-
-        product_arr.forEach((el,idx) => {
-            addProductIntoTable?.appendChild(
-                addProductsIntoTables(
-                    el.name,
-                    el.image,
-                    el.price,
-                    el.description,
-                    true,
-                    idx+1,
-                )
-            );
-        })
-
+        renderTable();
 
     }
+
+    // * For View, Delete and short
 
     if(e.target.matches("[data-button]")){               
         if(e.target.id.split("-")[1] ==="delete"){            
@@ -216,19 +279,7 @@ document.body.addEventListener("click", e => {
             
             localStorage.setItem("product_arr",JSON.stringify(product_arr));
             const arr = JSON.parse(localStorage.getItem("product_arr"));
-            addProductIntoTable.innerHTML = '';
-            arr.forEach((el,idx) => {
-                addProductIntoTable?.appendChild(
-                    addProductsIntoTables(
-                        el.name,
-                        el.image,
-                        el.price,
-                        el.description,
-                        true,
-                        idx+1,
-                    )
-                );
-            });
+            renderTable(arr);
             
         }else{
             sessionStorage.setItem("idx", (e.target.id.split("-")[2])-1);
@@ -236,102 +287,48 @@ document.body.addEventListener("click", e => {
     }
 });
 
-// add to localStorage when its load
+/**
+ * * Loading Item on initial
+ * ! if and only if localStorage has item
+ */
 window.addEventListener("load", (event) => {
     
     if(localStorage.getItem("product_arr").length > 0){
         product_arr = JSON.parse(localStorage.getItem("product_arr"))
-        product_arr.forEach((el,idx) => {
-            addProductIntoTable?.appendChild(
-                addProductsIntoTables(
-                    el.name,
-                    el.image,
-                    el.price,
-                    el.description,
-                    true,
-                    idx+1,
-                )
-            );
-        })
+        renderTable(product_arr);       
     }
 });
 
-const renderTable = (arr=product_arr,filter_inp=null) => {
-    
-    addProductIntoTable.innerHTML = '';
-    arr.forEach((el,idx) => {
-        addProductIntoTable?.appendChild(
-            addProductsIntoTables(
-                el.name,
-                el.image,
-                el.price,
-                el.description,
-                true,
-                filter_inp!==null?filter_inp:idx+1,
-            )
-        );
-    });
-}
 
 
-// For filter
-document.getElementById("filter-input").addEventListener("keydown",(e) => {
+const filterId = document.getElementById("filter-input");
+/**
+ * * For Filtering by Id
+*/
+document.getElementById("filter-input").addEventListener("keyup",(e) => {
     let val = e.key;
-    var reg = /^\d+$/;
-    console.log(typeof val);
+    var reg = /^\d+$/;    
     if(reg.test(val) && parseInt(val)>0){
-        const filterId = document.getElementById("filter-input");
-        
-        const f = [product_arr.at(parseInt(val)-1)];
-        // const f = product_arr.forEach((el,idx) => {
-        //     if(idx === val)
-        // })
+        try{
+            const f = [product_arr.at(parseInt(filterId.value)-1)];
+            renderTable(f,Math.abs(filterId.value));
+        }catch(err){
+            const alertStr = `        
+                <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-red-800 dark:text-red-400 lineUp" role="alert">
+                    <span class="font-medium">No Record Found!</span>                                 
+                </div>
+            `
 
-        console.log("F -> ",f);
-        renderTable(f,filterId.value+1);
+            document.getElementById("alert-box").innerHTML = alertStr;
+
+            setTimeout(() => {
+                document.getElementById("alert-box").innerHTML = "";
+            },2000)
+        }        
     }
 
     if(e.key === "Backspace"){
+        // * For throwin error on runtime if records not found
         renderTable();
     }
 });
-
-// document.getElementById("filter_form").addEventListener("submit",e => {
-//     e.preventDefault();
-//     const filterId = document.getElementById("filter-input");
-//    if(filterId.value === null){
-//         addProductIntoTable.innerHTML = '';
-//         product_arr.forEach((el,idx) => {
-//             addProductIntoTable?.appendChild(
-//                 addProductsIntoTables(
-//                     el.name,
-//                     el.image,
-//                     el.price,
-//                     el.description,
-//                     true,
-//                     filterId.value,
-//                 )
-//             );
-//         });
-//    }else{
-
-//        const f = [product_arr.at(filterId.value-1)];
-       
-//        localStorage.setItem("product_filter",JSON.stringify(f));
-//        addProductIntoTable.innerHTML = '';
-//        f.forEach((el,idx) => {
-//            addProductIntoTable?.appendChild(
-//                addProductsIntoTables(
-//                    el.name,
-//                    el.image,
-//                    el.price,
-//                    el.description,
-//                    true,
-//                    filterId.value,
-//                )
-//            );
-//        });
-        
-//    }
-   
-// })
